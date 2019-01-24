@@ -7,7 +7,17 @@ public class PlanetTest {
 
     @Test
     public void run() throws IOException {
-        Planet planet = new Planet();
+        Http http = (String url) ->
+            "{\"results\":" +
+                "[" +
+                    "{" +
+                        "\"name\": \"Tatooine\"," +
+                        "\"climate\": \"arid\"" +
+                    "}" +
+                "]" +
+            "}";
+
+        Planet planet = new Planet(http);
         String climate = planet.getClimate("Tatooine");
 
         Assert.assertEquals("arid", climate);
