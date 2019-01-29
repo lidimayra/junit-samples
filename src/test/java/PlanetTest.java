@@ -1,5 +1,8 @@
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
+
+import static org.mockito.Mockito.contains;
 
 import java.io.IOException;
 
@@ -7,18 +10,18 @@ public class PlanetTest {
 
     @Test
     public void run() throws IOException {
-        Http http = (String url) -> {
-            if(!url.contains("search=Tatooine"))
-                Assert.fail(url + " does not contain expected param!");
-            return "{\"results\":" +
-                        "[" +
-                            "{" +
-                                "\"name\": \"Tatooine\"," +
-                                "\"climate\": \"arid\"" +
-                            "}" +
-                        "]" +
-                    "}";
-        };
+        Http http = Mockito.mock(Http.class);
+
+        Mockito.when(http.get(contains("search=Tatooine"))).thenReturn(
+                "{\"results\":" +
+                    "[" +
+                        "{" +
+                            "\"name\": \"Tatooine\"," +
+                            "\"climate\": \"arid\"" +
+                        "}" +
+                    "]" +
+                "}"
+        );
 
         Planet planet = new Planet(http);
         String climate = planet.getClimate("Tatooine");
