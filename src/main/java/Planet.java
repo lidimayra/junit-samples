@@ -5,11 +5,7 @@ import java.io.IOException;
 
 
 public class Planet {
-    private Http http;
-
-    public Planet(Http http) {
-        this.http = http;
-    }
+    private Http http = new HttpImpl();
 
     public String getClimate(String name) throws IOException {
         String uri = String.format("https://swapi.co/api/planets/?search=%s", name);
