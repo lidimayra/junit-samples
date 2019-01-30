@@ -1,19 +1,13 @@
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-
-import static org.mockito.Mockito.contains;
+import org.mockito.*;
 
 import java.io.IOException;
 
 public class PlanetTest {
-    @Mock private Http http;
-
-    @InjectMocks private Planet planet;
+    @Spy
+    private Planet planet;
 
     @Before
     public void setupPlanet() {
@@ -22,7 +16,7 @@ public class PlanetTest {
 
     @Test
     public void run() throws IOException {
-        Mockito.when(http.get(contains("search=Tatooine"))).thenReturn(
+        Mockito.doReturn(
                 "{\"results\":" +
                     "[" +
                         "{" +
@@ -31,7 +25,7 @@ public class PlanetTest {
                         "}" +
                     "]" +
                 "}"
-        );
+        ).when(planet).getResponseFromAPI("Tatooine");
 
         String climate = planet.getClimate("Tatooine");
 
